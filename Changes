@@ -1,5 +1,12 @@
 Revision history for B-RecDeparse
 
+0.02    2008-07-28 21:30 UTC
+        + Chg : Perl 5.8 is now required.
+        + Doc : POD nits.
+        + Fix : Empty README.
+        + Fix : Building on perls with a patchlevel.
+        + Tst : Skip a few harmless failures on perls older than 5.8.7.
+
 0.01    2008-07-28 10:35 UTC
         First version, released on an unsuspecting world.
 

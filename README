@@ -1,0 +1,76 @@
+NAME
+    B::RecDeparse - Deparse recursively into subroutines.
+
+VERSION
+    Version 0.02
+
+SYNOPSIS
+        perl -MO=RecDeparse,deparse,[@B__Deparse_opts],level,-1 [ -e '...' | bleh.pl ]
+
+        # Or as a module :
+        use B::RecDeparse;
+
+        my $brd = B::RecDeparse->new(deparse => [ @b__deparse_opts ], level => $level);
+        my $code = $brd->coderef2text(sub { ... });
+
+DESCRIPTION
+    This module extends B::Deparse by making you recursively replace
+    subroutine calls encountered when deparsing.
+
+    Please refer to B::Deparse documentation for what to do and how to do
+    it. Besides the constructor syntax, everything should work the same for
+    the two modules.
+
+METHODS
+  "new < deparse => [ @B__Deparse_opts ], level => $level >"
+    The B::RecDeparse object constructor. You can specify the underlying
+    B::Deparse constructor arguments by passing a string or an array
+    reference as the value of the "deparse" key. The "level" option expects
+    an integer that specifies how many levels of recursions are allowed : -1
+    means infinite while 0 means none and match B::Deparse behaviour.
+
+  "compile"
+  "init"
+  "pp_entersub"
+  "pp_refgen"
+  "pp_gv"
+    Functions and methods from B::Deparse overriden by this module. Never
+    call them directly.
+
+    Otherwise, B::RecDeparse inherits all methods from B::Deparse.
+
+EXPORT
+    An object-oriented module shouldn't export any function, and so does
+    this one.
+
+DEPENDENCIES
+    Carp (standard since perl 5), Config (since perl 5.00307) and B::Deparse
+    (since perl 5.005).
+
+AUTHOR
+    Vincent Pit, "<perl at profvince.com>", <http://www.profvince.com>.
+
+    You can contact me by mail or on #perl @ FreeNode (vincent or
+    Prof_Vince).
+
+BUGS
+    Please report any bugs or feature requests to "bug-b-recdeparse at
+    rt.cpan.org", or through the web interface at
+    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=B-RecDeparse>. I will be
+    notified, and then you'll automatically be notified of progress on your
+    bug as I make changes.
+
+SUPPORT
+    You can find documentation for this module with the perldoc command.
+
+        perldoc B::RecDeparse
+
+    Tests code coverage report is available at
+    <http://www.profvince.com/perl/cover/B-RecDeparse>.
+
+COPYRIGHT & LICENSE
+    Copyright 2008 Vincent Pit, all rights reserved.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+

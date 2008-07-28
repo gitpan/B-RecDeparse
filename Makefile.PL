@@ -1,3 +1,5 @@
+use 5.008;
+
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
@@ -25,11 +27,12 @@ WriteMakefile(
     ABSTRACT_FROM => 'lib/B/RecDeparse.pm',
     PL_FILES      => {},
     PREREQ_PM     => {
-        'Carp'       => 0,
-        'B::Deparse' => 0
+        'B::Deparse' => 0,
+        'Config'     => 0,
+        'Carp'       => 0
     },
     dist          => {
-        PREOP        => 'pod2text lib/Variable/Magic.pm > $(DISTVNAME)/README; '
+        PREOP        => 'pod2text lib/B/RecDeparse.pm > $(DISTVNAME)/README; '
                         . build_req,
         COMPRESS     => 'gzip -9f', SUFFIX => 'gz'
     },

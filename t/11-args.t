@@ -22,7 +22,10 @@ my $i = 1;
 for (@brd_args) {
  my $brd = B::RecDeparse->new(%$_, level => 0);
  my $code = $brd->coderef2text(\&wut);
+SKIP: {
+ skip 'Harmless mismatch on "use warnings" code generation with olders B::Deparse' => 1 if $B::Deparse::VERSION < 0.71;
  is($code, $reference, "empty deparse and level 0 does the same thing as B::Deparse ($i)");
+}
  $code = eval 'sub ' . $code;
  is($@, '', "result compiles ($i)");
  is_deeply( [ defined $code, ref $code ], [ 1, 'CODE' ], "result compiles to a code reference ($i)");

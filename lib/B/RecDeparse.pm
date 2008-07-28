@@ -1,9 +1,12 @@
 package B::RecDeparse;
 
+use 5.008;
+
 use strict;
 use warnings;
 
 use Carp qw/croak/;
+use Config;
 
 use base qw/B::Deparse/;
 
@@ -13,11 +16,11 @@ B::RecDeparse - Deparse recursively into subroutines.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -39,9 +42,16 @@ Please refer to L<B::Deparse> documentation for what to do and how to do it. Bes
 
 =head2 C<< new < deparse => [ @B__Deparse_opts ], level => $level > >>
 
-The L<B::RecDeparse> object constructor. You can specify the underlying L<B::Deparse> constructor arguments by passing a string or an array reference as the value of the C<deparse> key. The C<level> option expects an integer that specifies how many levels of recursions are allowed : L<-1> means infinite while L<0> means none and match L<B::Deparse> behaviour.
+The L<B::RecDeparse> object constructor. You can specify the underlying L<B::Deparse> constructor arguments by passing a string or an array reference as the value of the C<deparse> key. The C<level> option expects an integer that specifies how many levels of recursions are allowed : C<-1> means infinite while C<0> means none and match L<B::Deparse> behaviour.
 
 =cut
+
+use constant {
+ # p31268 made pp_entersub call single_delim
+ FOOL_SINGLE_DELIM =>
+     ($^V ge v5.9.5)
+  || ($Config{perl_patchlevel} && $Config{perl_patchlevel} >= 31268)
+};
 
 sub _parse_args {
  croak 'Optional arguments must be passed as key/value pairs' if @_ % 2;
@@ -97,8 +107,7 @@ sub init {
 
 my $key = $; . __PACKAGE__ . $;;
 
-# p31268 made pp_entersub call single_delim
-if ($^V ge v5.9.5) {
+if (FOOL_SINGLE_DELIM) {
  my $oldsd = *B::Deparse::single_delim{CODE};
  no warnings 'redefine';
  *B::Deparse::single_delim = sub {
@@ -138,10 +147,10 @@ sub pp_gv {
   ++$self->{brd_cur};
   $body = 'sub ' . $self->indent($self->deparse_sub($gv->CV));
   --$self->{brd_cur};
-  if ($^V lt v5.9.5) {
-   $body .= '->';
-  } else {
+  if (FOOL_SINGLE_DELIM) {
    $body = $key . $body;
+  } else {
+   $body .= '->';
   }
  }
  return $body;
@@ -167,7 +176,7 @@ An object-oriented module shouldn't export any function, and so does this one.
 
 =head1 DEPENDENCIES
 
-L<Carp> (standard since perl 5), L<B::Deparse> (since perl 5.005).
+L<Carp> (standard since perl 5), L<Config> (since perl 5.00307) and L<B::Deparse> (since perl 5.005).
 
 =head1 AUTHOR
 
