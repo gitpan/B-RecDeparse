@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                B-RecDeparse
-version:             0.02
+version:             0.03
 abstract:            Deparse recursively into subroutines.
 license:             perl
 author:              

@@ -36,5 +36,5 @@ WriteMakefile(
                         . build_req,
         COMPRESS     => 'gzip -9f', SUFFIX => 'gz'
     },
-    clean         => { FILES => 'B-RecDeparse-* *.gcov *.gcda *.gcno cover_db' }
+    clean         => { FILES => 'B-RecDeparse-* *.gcov *.gcda *.gcno cover_db Debian_CPANTS.txt' }
 );

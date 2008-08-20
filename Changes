@@ -1,5 +1,9 @@
 Revision history for B-RecDeparse
 
+0.03    2008-08-20 14:30 UTC
+        + Fix : Bug when recursing into a sub that had a gv op which wasn't
+                associated with a rv2cv.
+
 0.02    2008-07-28 21:30 UTC
         + Chg : Perl 5.8 is now required.
         + Doc : POD nits.

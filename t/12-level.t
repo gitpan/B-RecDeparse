@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => (3 + 3) * 5;
+use Test::More tests => (3 + 3) * 5 + 1;
 
 use B::Deparse;
 use B::RecDeparse;
@@ -44,3 +44,7 @@ which $brd, [ ], [ qw/add mul fma/ ], 2;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 3);
 which $brd, [ ], [ qw/add mul fma/ ], 2;
+
+sub fakegv { return @_ }
+eval { $brd->coderef2text(sub { return fakegv() }) };
+is($@, '', 'don\'t croak on non-CV GV\'s at level >= 1');

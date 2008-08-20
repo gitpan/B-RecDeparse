@@ -16,11 +16,11 @@ B::RecDeparse - Deparse recursively into subroutines.
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -82,7 +82,7 @@ sub new {
 }
 
 sub _recurse {
- return $_[0]->{brd_level} >= 0 && $_[0]->{brd_cur} >= $_[0]->{brd_level}
+ return $_[0]->{brd_level} < 0 || $_[0]->{brd_cur} < $_[0]->{brd_level}
 }
 
 sub compile {
@@ -122,31 +122,33 @@ if (FOOL_SINGLE_DELIM) {
 
 sub pp_entersub {
  my $self = shift;
- $self->{brd_sub} = 1;
- my $body = $self->SUPER::pp_entersub(@_);
- $self->{brd_sub} = 0;
- $body =~ s/^&\s*(\w)/$1/ if not $self->_recurse;
+ my $body = do {
+  local $self->{brd_sub} = 1;
+  $self->SUPER::pp_entersub(@_);
+ };
+ $body =~ s/^&\s*(\w)/$1/ if $self->_recurse;
  return $body;
 }
 
 sub pp_refgen {
  my $self = shift;
- $self->{brd_sub} = 0;
- my $body = $self->SUPER::pp_refgen(@_);
- $self->{brd_sub} = 1;
- return $body;
+ return do {
+  local $self->{brd_sub} = 0;
+  $self->SUPER::pp_refgen(@_);
+ }
 }
 
 sub pp_gv {
  my $self = shift;
  my $body;
- if ($self->{brd_sub} <= 0 || $self->_recurse) {
+ if ($self->{brd_sub} <= 0 || !$self->_recurse) {
   $body = $self->SUPER::pp_gv(@_);
  } else {
   my $gv = $self->gv_or_padgv($_[0]);
-  ++$self->{brd_cur};
-  $body = 'sub ' . $self->indent($self->deparse_sub($gv->CV));
-  --$self->{brd_cur};
+  $body = do {
+   local @{$self}{qw/brd_sub brd_cur/} = (0, $self->{brd_cur} + 1);
+   'sub ' . $self->indent($self->deparse_sub($gv->CV));
+  };
   if (FOOL_SINGLE_DELIM) {
    $body = $key . $body;
   } else {

@@ -5,10 +5,8 @@ use warnings;
 
 use lib qw{blib/lib};
 use B::RecDeparse;
-# use B::Deparse;
 
 my $deparser = B::RecDeparse->new(deparse => [ '-sCi0v1' ], level => 1);
-# my $deparser = B::Deparse->new('-sCi0v1');
 
 sub spec (&) {
  return unless defined $_[0] and ref $_[0] eq 'CODE';
