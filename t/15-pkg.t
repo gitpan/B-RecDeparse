@@ -3,14 +3,14 @@
 use strict;
 use warnings;
 
-use Test::More tests => (3 + 3) * 5 + 1;
+use Test::More tests => (3 + 3) * 5;
 
 use B::RecDeparse;
 
-sub add { $_[0] + $_[1] }
-sub mul { $_[0] * $_[1] }
-sub fma { add mul($_[0], $_[1]), $_[2] }
-sub wut { fma $_[0], 2, $_[1] }
+sub wut { Dongs::fma($_[0], 2, $_[1]) }
+sub Dongs::fma { Hlagh::add(main::mul($_[0], $_[1]), $_[2]) }
+sub Hlagh::add { $_[0] + $_[1] }
+sub mul ($$) { $_[0] * $_[1] }
 
 sub which {
  my ($brd, $yes, $no, $l) = @_;
@@ -30,20 +30,16 @@ sub which {
 my $br_args = '-sCi0v1';
 
 my $brd = B::RecDeparse->new(deparse => [ $br_args ], level => -1);
-which $brd, [ ], [ qw/add mul fma/ ], -1;
+which $brd, [ ], [ qw/Hlagh::add mul Dongs::fma/ ], -1;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 0);
-which $brd, [ qw/fma/ ], [ qw/add mul/ ], 0;
+which $brd, [ qw/fma/ ], [ qw/Hlagh::add mul/ ], 0;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 1);
-which $brd, [ qw/add mul/ ], [ qw/fma/ ], 1;
+which $brd, [ qw/add mul/ ], [ qw/Dongs::fma/ ], 1;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 2);
-which $brd, [ ], [ qw/add mul fma/ ], 2;
+which $brd, [ ], [ qw/Hlagh::add mul Dongs::fma/ ], 2;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 3);
-which $brd, [ ], [ qw/add mul fma/ ], 2;
-
-sub fakegv { return @_ }
-eval { $brd->coderef2text(sub { return fakegv() }) };
-is($@, '', 'don\'t croak on non-CV GV\'s at level >= 1');
+which $brd, [ ], [ qw/Hlagh::add mul Dongs::fma/ ], 2;

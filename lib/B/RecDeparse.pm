@@ -16,11 +16,11 @@ B::RecDeparse - Deparse recursively into subroutines.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -34,7 +34,7 @@ our $VERSION = '0.03';
 
 =head1 DESCRIPTION
 
-This module extends L<B::Deparse> by making you recursively replace subroutine calls encountered when deparsing.
+This module extends L<B::Deparse> by making it recursively replace subroutine calls encountered when deparsing.
 
 Please refer to L<B::Deparse> documentation for what to do and how to do it. Besides the constructor syntax, everything should work the same for the two modules.
 
@@ -50,6 +50,7 @@ use constant {
  # p31268 made pp_entersub call single_delim
  FOOL_SINGLE_DELIM =>
      ($^V ge v5.9.5)
+  || ($^V lt v5.9.0 and $^V ge v5.8.9)
   || ($Config{perl_patchlevel} && $Config{perl_patchlevel} >= 31268)
 };
 
@@ -112,7 +113,7 @@ if (FOOL_SINGLE_DELIM) {
  no warnings 'redefine';
  *B::Deparse::single_delim = sub {
   my $body = $_[2];
-  if ($body =~ s/^$key//) {
+  if ((caller 1)[0] eq __PACKAGE__ and $body =~ s/^$key//) {
    return $body;
   } else {
    $oldsd->(@_);
@@ -168,7 +169,7 @@ sub pp_gv {
 
 =head2 C<pp_gv>
 
-Functions and methods from L<B::Deparse> overriden by this module. Never call them directly.
+Functions and methods from L<B::Deparse> reimplemented by this module. Never call them directly.
 
 Otherwise, L<B::RecDeparse> inherits all methods from L<B::Deparse>.
 
@@ -184,7 +185,7 @@ L<Carp> (standard since perl 5), L<Config> (since perl 5.00307) and L<B::Deparse
 
 Vincent Pit, C<< <perl at profvince.com> >>, L<http://www.profvince.com>.
 
-You can contact me by mail or on #perl @ FreeNode (vincent or Prof_Vince).
+You can contact me by mail or on C<irc.perl.org> (vincent).
 
 =head1 BUGS
 

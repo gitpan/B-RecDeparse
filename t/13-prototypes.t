@@ -5,7 +5,6 @@ use warnings;
 
 use Test::More tests => (3 + 3) * 5;
 
-use B::Deparse;
 use B::RecDeparse;
 
 sub add ($$) { $_[0] + $_[1] }

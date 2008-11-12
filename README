@@ -2,7 +2,7 @@ NAME
     B::RecDeparse - Deparse recursively into subroutines.
 
 VERSION
-    Version 0.03
+    Version 0.04
 
 SYNOPSIS
         perl -MO=RecDeparse,deparse,[@B__Deparse_opts],level,-1 [ -e '...' | bleh.pl ]
@@ -14,7 +14,7 @@ SYNOPSIS
         my $code = $brd->coderef2text(sub { ... });
 
 DESCRIPTION
-    This module extends B::Deparse by making you recursively replace
+    This module extends B::Deparse by making it recursively replace
     subroutine calls encountered when deparsing.
 
     Please refer to B::Deparse documentation for what to do and how to do
@@ -34,8 +34,8 @@ METHODS
   "pp_entersub"
   "pp_refgen"
   "pp_gv"
-    Functions and methods from B::Deparse overriden by this module. Never
-    call them directly.
+    Functions and methods from B::Deparse reimplemented by this module.
+    Never call them directly.
 
     Otherwise, B::RecDeparse inherits all methods from B::Deparse.
 
@@ -50,8 +50,7 @@ DEPENDENCIES
 AUTHOR
     Vincent Pit, "<perl at profvince.com>", <http://www.profvince.com>.
 
-    You can contact me by mail or on #perl @ FreeNode (vincent or
-    Prof_Vince).
+    You can contact me by mail or on "irc.perl.org" (vincent).
 
 BUGS
     Please report any bugs or feature requests to "bug-b-recdeparse at
