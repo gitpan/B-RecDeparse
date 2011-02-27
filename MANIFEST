@@ -1,5 +1,6 @@
 Changes
 MANIFEST
+META.yml
 Makefile.PL
 README
 lib/B/RecDeparse.pm
@@ -12,11 +13,11 @@ t/12-level.t
 t/13-prototypes.t
 t/14-refs.t
 t/15-pkg.t
+t/16-recurse.t
+t/17-calls.t
 t/20-compile.t
 t/21-single_delim.t
-t/90-boilerplate.t
 t/91-pod.t
 t/92-pod-coverage.t
 t/95-portability-files.t
 t/99-kwalitee.t
-META.yml                                 Module meta-data (added by MakeMaker)

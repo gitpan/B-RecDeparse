@@ -30,16 +30,16 @@ sub which {
 my $br_args = '-sCi0v1';
 
 my $brd = B::RecDeparse->new(deparse => [ $br_args ], level => -1);
-which $brd, [ ], [ qw/Hlagh::add mul Dongs::fma/ ], -1;
+which $brd, [ ], [ qw<Hlagh::add mul Dongs::fma> ], -1;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 0);
-which $brd, [ qw/fma/ ], [ qw/Hlagh::add mul/ ], 0;
+which $brd, [ qw<fma> ], [ qw<Hlagh::add mul> ], 0;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 1);
-which $brd, [ qw/add mul/ ], [ qw/Dongs::fma/ ], 1;
+which $brd, [ qw<add mul> ], [ qw<Dongs::fma> ], 1;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 2);
-which $brd, [ ], [ qw/Hlagh::add mul Dongs::fma/ ], 2;
+which $brd, [ ], [ qw<Hlagh::add mul Dongs::fma> ], 2;
 
 $brd = B::RecDeparse->new(deparse => [ $br_args ], level => 3);
-which $brd, [ ], [ qw/Hlagh::add mul Dongs::fma/ ], 2;
+which $brd, [ ], [ qw<Hlagh::add mul Dongs::fma> ], 2;

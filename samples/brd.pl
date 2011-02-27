@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib qw{blib/lib};
+use lib qw<blib/lib>;
 use B::RecDeparse;
 
 my $deparser = B::RecDeparse->new(deparse => [ '-sCi0v1' ], level => 1);
