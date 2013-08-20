@@ -1,5 +1,12 @@
 Revision history for B-RecDeparse
 
+0.06    2013-08-20 19:25 UTC
+        This is a maintenance release. The code contains no functional change.
+        Satisfied users of version 0.05 can skip this update.
+        + Tst : Some tests will no longer warn with development versions of
+                B::Deparse.
+        + Tst : The Kwalitee test has been removed.
+
 0.05    2011-02-27 21:15 UTC
         + Chg : perl 5.8.1 is required.
         + Fix : [RT #63842] : Breakage on some imported subs.

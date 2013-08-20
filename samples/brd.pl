@@ -25,4 +25,4 @@ sub fma ($$$) { add +(mul $_[0], $_[1]), $_[2] }
 
 print STDERR '### ', fma(1, 3, 2), "\n";
 my $sfma = spec sub { my $x = \&mul; fma $_[0], 3, $_[1] };
-print STDERR '### ', $sfma->(1, 2), "\n"; 
+print STDERR '### ', $sfma->(1, 2), "\n";

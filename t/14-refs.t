@@ -34,20 +34,20 @@ sub which {
  is($code->(2), $coderef->(2), "result compiles to the good thing at level $l");
 }
 
-my $br_args = '-sCi0v1';
+my $bd_args = '-sCi0v1';
 
-my $brd = B::RecDeparse->new(deparse => $br_args, level => -1);
+my $brd = B::RecDeparse->new(deparse => $bd_args, level => -1);
 which $brd, \&foo, [ ], [ qw<add dummy> ], [ qw<add call> ], [ ], -1;
 which $brd, \&bar, [ ], [ qw<add call> ], [ qw<add call> ], [ ], -1;
 
-$brd = B::RecDeparse->new(deparse => $br_args, level => 0);
+$brd = B::RecDeparse->new(deparse => $bd_args, level => 0);
 which $brd, \&foo, [ qw<call> ], [ qw<add> ], [ qw<add> ], [ qw<dummy> ], 0;
 which $brd, \&bar, [ ], [ qw<add call> ], [ qw<add> ], [ qw<dummy> ], 0;
 
-$brd = B::RecDeparse->new(deparse => $br_args, level => 1);
+$brd = B::RecDeparse->new(deparse => $bd_args, level => 1);
 which $brd, \&foo, [ ], [ qw<add dummy> ], [ qw<add call> ], [ ], 1;
 which $brd, \&bar, [ ], [ qw<add call> ], [ qw<add call> ], [ ], 1;
 
-$brd = B::RecDeparse->new(deparse => $br_args, level => 2);
+$brd = B::RecDeparse->new(deparse => $bd_args, level => 2);
 which $brd, \&foo, [ ], [ qw<add dummy> ], [ qw<add call> ], [ ], 2;
 which $brd, \&bar, [ ], [ qw<add call> ], [ qw<add call> ], [ ], 2;
