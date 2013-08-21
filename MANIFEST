@@ -18,8 +18,3 @@ t/16-recurse.t
 t/17-calls.t
 t/20-compile.t
 t/21-single_delim.t
-t/91-pod.t
-t/92-pod-coverage.t
-t/93-pod-spelling.t
-t/95-portability-files.t
-t/lib/VPIT/TestHelpers.pm
