@@ -1,5 +1,11 @@
 Revision history for B-RecDeparse
 
+0.08    2013-09-01 17:30 UTC
+        This is a maintenance release. The code contains no functional change.
+        Satisfied users of version 0.07 can skip this update.
+        + Doc : POD headings are now properly linkable.
+        + Doc : Miscellaneous POD tweaks.
+
 0.07    2013-08-21 21:15 UTC
         This is a maintenance release. The code contains no functional change.
         Satisfied users of version 0.06 can skip this update.

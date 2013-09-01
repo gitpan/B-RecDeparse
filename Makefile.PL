@@ -1,4 +1,4 @@
-use 5.008001;
+use 5.008_001;
 
 use strict;
 use warnings;
@@ -44,10 +44,10 @@ WriteMakefile(
  ABSTRACT_FROM    => $file,
  PL_FILES         => {},
  PREREQ_PM        => \%PREREQ_PM,
- MIN_PERL_VERSION => 5.008001,
+ MIN_PERL_VERSION => '5.008001',
  META_MERGE       => \%META,
  dist             => {
-  PREOP    => "pod2text $file > \$(DISTVNAME)/README",
+  PREOP    => "pod2text -u $file > \$(DISTVNAME)/README",
   COMPRESS => 'gzip -9f', SUFFIX => 'gz'
  },
  clean            => {

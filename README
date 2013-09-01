@@ -2,15 +2,22 @@ NAME
     B::RecDeparse - Deparse recursively into subroutines.
 
 VERSION
-    Version 0.07
+    Version 0.08
 
 SYNOPSIS
-        perl -MO=RecDeparse,deparse,[@B__Deparse_opts],level,-1 [ -e '...' | bleh.pl ]
+        # Deparse recursively a Perl one-liner :
+        $ perl -MO=RecDeparse,deparse,@B__Deparse_opts,level,-1 -e '...'
 
-        # Or as a module :
+        # Or a complete Perl script :
+        $ perl -MO=RecDeparse,deparse,@B__Deparse_opts,level,-1 x.pl
+
+        # Or a single code reference :
         use B::RecDeparse;
 
-        my $brd = B::RecDeparse->new(deparse => [ @b__deparse_opts ], level => $level);
+        my $brd = B::RecDeparse->new(
+         deparse => \@B__Deparse_opts,
+         level   => $level,
+        );
         my $code = $brd->coderef2text(sub { ... });
 
 DESCRIPTION
@@ -22,21 +29,32 @@ DESCRIPTION
     the two modules.
 
 METHODS
-  "new < deparse => [ @B__Deparse_opts ], level => $level >"
+  "new"
+        my $brd = B::RecDeparse->new(
+         deparse => \@B__Deparse_opts,
+         level   => $level,
+        );
+
     The B::RecDeparse object constructor. You can specify the underlying
     B::Deparse constructor arguments by passing a string or an array
     reference as the value of the "deparse" key. The "level" option expects
     an integer that specifies how many levels of recursions are allowed : -1
     means infinite while 0 means none and match B::Deparse behaviour.
 
-  "compile"
-  "init"
-  "deparse_sub"
-  "pp_entersub"
-  "pp_refgen"
-  "pp_gv"
-    Functions and methods from B::Deparse reimplemented by this module.
-    Never call them directly.
+    The following functions and methods from B::Deparse are reimplemented by
+    this module :
+
+    *   "compile"
+
+    *   "init"
+
+    *   "deparse_sub"
+
+    *   "pp_entersub"
+
+    *   "pp_refgen"
+
+    *   "pp_gv"
 
     Otherwise, B::RecDeparse inherits all methods from B::Deparse.
 

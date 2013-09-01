@@ -1,6 +1,6 @@
 package B::RecDeparse;
 
-use 5.008001;
+use 5.008_001;
 
 use strict;
 use warnings;
@@ -17,20 +17,27 @@ B::RecDeparse - Deparse recursively into subroutines.
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =cut
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 =head1 SYNOPSIS
 
-    perl -MO=RecDeparse,deparse,[@B__Deparse_opts],level,-1 [ -e '...' | bleh.pl ]
+    # Deparse recursively a Perl one-liner :
+    $ perl -MO=RecDeparse,deparse,@B__Deparse_opts,level,-1 -e '...'
 
-    # Or as a module :
+    # Or a complete Perl script :
+    $ perl -MO=RecDeparse,deparse,@B__Deparse_opts,level,-1 x.pl
+
+    # Or a single code reference :
     use B::RecDeparse;
 
-    my $brd = B::RecDeparse->new(deparse => [ @b__deparse_opts ], level => $level);
+    my $brd = B::RecDeparse->new(
+     deparse => \@B__Deparse_opts,
+     level   => $level,
+    );
     my $code = $brd->coderef2text(sub { ... });
 
 =head1 DESCRIPTION
@@ -42,7 +49,12 @@ Besides the constructor syntax, everything should work the same for the two modu
 
 =head1 METHODS
 
-=head2 C<< new < deparse => [ @B__Deparse_opts ], level => $level > >>
+=head2 C<new>
+
+    my $brd = B::RecDeparse->new(
+     deparse => \@B__Deparse_opts,
+     level   => $level,
+    );
 
 The L<B::RecDeparse> object constructor.
 You can specify the underlying L<B::Deparse> constructor arguments by passing a string or an array reference as the value of the C<deparse> key.
@@ -53,8 +65,8 @@ The C<level> option expects an integer that specifies how many levels of recursi
 use constant {
  # p31268 made pp_entersub call single_delim
  FOOL_SINGLE_DELIM =>
-     ($^V ge v5.9.5)
-  || ($^V lt v5.9.0 and $^V ge v5.8.9)
+     ("$]" >= 5.009_005)
+  || ("$]" <  5.009 and "$]" >= 5.008_009)
   || ($Config{perl_patchlevel} && $Config{perl_patchlevel} >= 31268)
 };
 
@@ -207,20 +219,37 @@ sub pp_gv {
  return $body;
 }
 
-=head2 C<compile>
+=pod
 
-=head2 C<init>
+The following functions and methods from L<B::Deparse> are reimplemented by this module :
 
-=head2 C<deparse_sub>
+=over 4
 
-=head2 C<pp_entersub>
+=item *
 
-=head2 C<pp_refgen>
+C<compile>
 
-=head2 C<pp_gv>
+=item *
 
-Functions and methods from L<B::Deparse> reimplemented by this module.
-Never call them directly.
+C<init>
+
+=item *
+
+C<deparse_sub>
+
+=item *
+
+C<pp_entersub>
+
+=item *
+
+C<pp_refgen>
+
+=item *
+
+C<pp_gv>
+
+=back
 
 Otherwise, L<B::RecDeparse> inherits all methods from L<B::Deparse>.
 
