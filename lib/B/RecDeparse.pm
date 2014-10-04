@@ -17,11 +17,11 @@ B::RecDeparse - Deparse recursively into subroutines.
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
@@ -194,8 +194,9 @@ sub pp_gv {
  my $self = shift;
 
  my $gv   = $self->gv_or_padgv($_[0]);
- my $name = $gv->NAME;
- my $cv   = $gv->CV;
+ my $cv   = $gv->FLAGS & B::SVf_ROK ? $gv->RV : undef;
+ my $name = $cv ? $cv->NAME_HEK || $cv->GV->NAME : $gv->NAME;
+ $cv    ||= $gv->CV;
  my $seen = $self->{brd_seen};
 
  my $body;
@@ -206,7 +207,7 @@ sub pp_gv {
   $body = do {
    local @{$self}{qw<brd_sub brd_cur>} = (0, $self->{brd_cur} + 1);
    local $seen->{$name} = 1;
-   'sub ' . $self->indent($self->deparse_sub($gv->CV));
+   'sub ' . $self->indent($self->deparse_sub($cv));
   };
 
   if (FOOL_SINGLE_DELIM) {
@@ -284,7 +285,7 @@ Tests code coverage report is available at L<http://www.profvince.com/perl/cover
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008,2009,2010,2011,2013 Vincent Pit, all rights reserved.
+Copyright 2008,2009,2010,2011,2013,2014 Vincent Pit, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
